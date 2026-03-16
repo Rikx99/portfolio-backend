@@ -1,0 +1,151 @@
+html {
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body{
+    font-family: 'Inter', 'Roboto', 'Poppins', sans-serif;
+    color: #1b281b;
+    padding-block-start: 70px;
+    font-size: 1rem;
+    line-height: 1.6;
+    
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: #1b281b;
+}
+
+
+
+.offcanvas-bottom {
+    height: 65% !important;
+}
+
+
+.form-wrapper {
+    width: 100%;
+    max-width: 500px;
+}
+
+.img-wrapper {
+    background-color: #595151;
+    padding: 15px;
+    border-radius: 12px;
+    position: relative;
+}
+
+.max-width {
+    inline-size: 1320px;
+    margin-inline: auto;
+}
+
+section {
+     padding-block: 80px;
+}
+
+.card.project-card {
+    border: none;
+    background-color: #f8f8f8;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card.project-card img {
+    object-fit: cover;
+    height: 200px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding-block-start: 25px;
+    padding-block-end: 25px;
+}
+
+.about-box {
+    background-color: #ffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+.about-box a {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #595151;
+}
+
+
+
+.about-box i {
+    font-size: 1.3rem;
+    vertical-align: middle;
+    margin-inline-end: 8px;
+}
+
+.skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skills-tags a {
+    background-color: #f1f1f1;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1b281b;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.skills-tags a i {
+    font-size: 1rem;
+    color: #0d6efd;
+}
+
+.skills-tags a:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.skills-tags a:hover i {
+    color: #fff;
+}
+
+
+@media (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+footer p {
+    padding-block-start: 25px;
+}
+
+footer .col a {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color:#595151 !important;
+    transition: color 0.2s ease;
+}
+
+footer .col a:hover,
+footer .col a:focus-visible {
+    color: #0d6efd !important;
+}
