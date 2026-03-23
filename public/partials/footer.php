@@ -7,7 +7,7 @@
                 <div class="col pt-4">
                     <div class="d-flex flex-column">
                         <a class="text-decoration-none mb-2" href="index.php">Home</a>
-                        <a class="text-decoration-none mb-2" href="project.php">Project</a>
+                        <a class="text-decoration-none mb-2" href="project.php">Projects</a>
                         <a class="text-decoration-none mb-2" href="about.php">About</a>
                     </div>
                 </div>
@@ -23,10 +23,9 @@
 
             </div>
 
-            <p>© <?= date("Y") ?> - Il Mio Portfolio</p>
+            <p>© <?= date("Y") ?> - My Portfolio</p>
         </div>
     </div>
 </footer>
-
 </body>
 </html>

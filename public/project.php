@@ -4,17 +4,13 @@ require_once "../core/functions.php";
 
 // Validazione ID
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$project = getProject($pdo, $id);
+$project = getProjectById($pdo, $id);
 
 
-if (!$project) {
-    echo "<h1>Project not found</h1>";
-    echo "<p>Il progetto richiesto non esiste oppure non hai ancora caricato progetti.</p>";
-    exit;
-}
+$isPlaceholder = !$project;
 ?>
 <?php include "partials/header.php"; ?>
-<body>
+<body class="dark-theme">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
     <header>
@@ -35,7 +31,7 @@ if (!$project) {
                         <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="project.php">Project</a>
+                        <a class="nav-link" href="project.php">Projects</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="about.php">About</a>
@@ -47,9 +43,9 @@ if (!$project) {
                         </a>
                     </li>
                 </ul>
-
-                <!-- Login button -->
-                <a href="#" class="btn btn-primary ms-lg-auto mt-3 mt-lg-0">Login</a>
+                <button id="themeToggle" class="btn btn-outline-light d-flex align-items-center gap-2">
+                <i id="themeIcon" class="bi bi-moon"></i>
+                </button>
             </div>
         </div>
     </nav>
@@ -64,7 +60,12 @@ if (!$project) {
         <div class="offcanvas-body d-flex justify-content-center">
             <div class="form-wrapper">
 
-                <form action="send_message.php" method="POST">
+                <form action="https://formspree.io/f/xyknqqkk" method="POST">
+
+                    <!-- Hidden fields -->
+                    <input type="hidden" name="_subjects" value="New message from your portfolio">
+                    <input type="hidden" name="_language" value="en">
+                    <input type="hidden" name="_redirect" value="https://rikx99.github.io/thankyou">
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -93,6 +94,14 @@ if (!$project) {
 
     <main class="container py-5">
 
+    <?php if($isPlaceholder): ?>
+
+        <div class="text-center p-5 border rounded-3">
+            <h1 class="mb3">Work in progress</h1>
+            <p class="text-muted">There are no projects available yet. Check back soon!</p>
+        </div>
+    <?php else: ?>    
+
         <h1 class="mb-4"><?= htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8') ?></h1>
 
         <img 
@@ -104,6 +113,7 @@ if (!$project) {
         <p class="fs-5">
             <?= nl2br(htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8')) ?>
         </p>
-
+    <?php endif; ?>
     </main>
+    <script src="assets/js/main.js"></script>
     <?php include "partials/footer.php" ?>

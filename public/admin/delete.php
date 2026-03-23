@@ -1,25 +1,37 @@
 <?php
-require_once "../../config/db.php";
-require_once "../../core/auth.php";
-require_once "../../core/functions.php";
-
+require_once __DIR__ . '/../../core/auth.php';
 requireLogin();
 
-$id = $_GET["id"] ?? "";
-$project = $id ? getProject($pdo, $id): "";
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../core/functions.php';
 
-if (!$project){
-    die("Progetto non trovato");
+// Controllo ID
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header("Location: /admin/dashboard.php?error=invalid_id");
+    exit;
 }
 
-//(Opzionale) Elimina anche l'immagine dal disco
+$id = (int) $_GET['id'];
 
-$uploadDir = "../../assets/uploads/";
-if ($project["image"] && file_exists($uploadDir . $project["image"])){
-    unlink($uploadDir . $project["image"]);
+// Recupera progetto
+$project = getProjectById($pdo, $id);
+
+if (!$project) {
+    header("Location: /admin/dashboard.php?error=notfound");
+    exit;
 }
 
-delete_Project($pdo, $id);
-header ("Location: dashboard.php");
+// Elimina immagine dal server
+$imagePath = __DIR__ . '/../../public/assets/uploads/' . $project['image'];
+
+if (!empty($project['image']) && file_exists($imagePath)) {
+    unlink($imagePath);
+}
+
+// Elimina dal database
+$stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
+$stmt->execute(['id' => $id]);
+
+// Redirect con messaggio di successo
+header("Location: /admin/dashboard.php?deleted=1");
 exit;
-?>

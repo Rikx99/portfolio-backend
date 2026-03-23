@@ -7,18 +7,20 @@ session_unset();
 // Distrugge la sessione del server
 session_destroy();
 
-if (ini_get("session.use cookies")) {
+// Rimuove il cookie di sessione (opzionale ma consigliato)
+if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
-    setcookie (session_name(), "",
-    time() - 42000,
-    $params["path"],
-    $params["domain"],
-    $params["secure"],
-    $params["httpsonly"]
+    setcookie(
+        session_name(),
+        "",
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
     );
 }
-// Reindirizza l' utente alla pagina di login dopo il logout
-header("Location: /login.php");
-exit();
 
-?>
+// Reindirizza l'utente alla pagina di login
+header("Location: /login.php");
+exit;

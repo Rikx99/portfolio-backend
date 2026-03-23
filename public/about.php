@@ -4,7 +4,7 @@ require_once __DIR__ . '/../core/functions.php';
 ?>
 <?php include "partials/header.php"; ?>
 
-<body>
+<body class="dark-theme">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
     <header>
@@ -25,7 +25,7 @@ require_once __DIR__ . '/../core/functions.php';
                         <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="project.php">Project</a>
+                        <a class="nav-link" href="project.php">Projects</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="about.php">About</a>
@@ -37,9 +37,9 @@ require_once __DIR__ . '/../core/functions.php';
                         </a>
                     </li>
                 </ul>
-
-                <!-- Login button -->
-                <a href="#" class="btn btn-primary ms-lg-auto mt-3 mt-lg-0">Login</a>
+                <button id="themeToggle" class="btn btn-outline-light d-flex align-items-center gap-2">
+                <i id="themeIcon" class="bi bi-moon"></i>
+                </button>
             </div>
         </div>
     </nav>
@@ -54,7 +54,12 @@ require_once __DIR__ . '/../core/functions.php';
         <div class="offcanvas-body d-flex justify-content-center">
             <div class="form-wrapper">
 
-                <form action="send_message.php" method="POST">
+                <form action="https://formspree.io/f/xyknqqkk" method="POST">
+
+                    <!-- Hidden fields -->
+                    <input type="hidden" name="_subjects" value="New message from your portfolio">
+                    <input type="hidden" name="_language" value="en">
+                    <input type="hidden" name="_redirect" value="https://rikx99.github.io/thankyou.html">
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -85,27 +90,39 @@ require_once __DIR__ . '/../core/functions.php';
             <div class="row align-items-center justify-content-center g-5">
 
                <div class="col-12 col-md-6">
-                    <h2 class="fw-bold mb-4">About</h2>
+                    <div class="about-text">
+                        <h2 class="fw-bold mb-4 stagger">About</h2>
 
-                    <p class="lead">Qualcosa su di me</p>
+                       <p class="lead stagger">Something About Me</p>
 
-                    <p>Mi chiamo <strong>Riccardo Barchi</strong> e provengo dal mondo della grafica, ambito nel quale ho sviluppato una forte attenzione al dettaglio e alla cura visiva. Negli ultimi anni ho intrapreso un nuovo percorso professionale orientato allo sviluppo web, formandomi come junior full stack developer.</p>
+                        <p class="stagger">
+                        My name is <strong>Riccardo Barchi</strong>, and I come from the world of graphic design, a field in which I developed a strong attention to detail and visual aesthetics. In recent years, I have embarked on a new professional path focused on web development, training as a junior full stack developer.
+                        </p>
 
-                    <p> Ho iniziato questo cammino seguendo un corso strutturato e proseguo oggi con uno studio costante da autodidatta, con l’obiettivo di ampliare le mie competenze e consolidare le basi tecniche necessarie per crescere nel settore.</p>
+                        <p class="stagger">
+                        I began this journey by attending a structured course, and I am now continuing with constant self‑taught study, with the goal of expanding my skills and strengthening the technical foundations needed to grow in this field.
+                        </p>
 
-                    <p> Attualmente sto approfondendo il lato backend, con particolare attenzione alla sicurezza, alla gestione dei CRUD, alle sessioni utente e alle best practice per la realizzazione di aree amministrative affidabili e professionali. Mi impegno a scrivere codice chiaro, ordinato e facilmente mantenibile.</p>
+                        <p class="stagger">
+                        I am currently deepening my knowledge of backend development, with particular attention to security, CRUD management, user sessions, and best practices for building reliable and professional admin areas. I strive to write clean, organized, and maintainable code.
+                        </p>
 
-                    <p>In questo periodo sto sviluppando il mio portfolio dinamico, completo di area admin, sistemi CRUD e gestione sicura degli upload. Il mio obiettivo è evolvere come full stack developer e contribuire a progetti moderni, ben strutturati e capaci di generare valore.</p>
+                        <p class="stagger">
+                        At the moment, I am developing my dynamic portfolio, complete with an admin area, CRUD systems, and secure upload handling. My goal is to grow as a full stack developer and contribute to modern, well‑structured projects that create real value.
+                        </p>
 
-                    <p>Oltre alla programmazione, coltivo un lato nerd e pratico regolarmente un’attività sportiva, che mi aiuta a mantenere equilibrio e disciplina anche in ambito professionale.</p>
+                        <p class="stagger">
+                        Beyond programming, I have a nerdy side and regularly practice sports, which helps me maintain balance and discipline in my professional life as well.
+                        </p>
+                    </div>
                 </div>
                <div class="col-12 col-md-6 d-flex justify-content-center">
                     <div class="img-wrapper">
-                    <img src="assets/uploads/placeholder-400x600.png" class="img-fluid border rounded";  alt="">
+                    <img src="assets/uploads/placeholder-400x600.png" class="img-fluid border rounded fade-image"  alt="">
                     </div>
                 </div>          
             </div>
         </section>
     </main>
-
+<script src="assets/js/main.js"></script>
 <?php include "partials/footer.php"; ?>

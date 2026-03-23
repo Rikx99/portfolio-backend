@@ -4,7 +4,7 @@ function getProjects($pdo) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getProject($pdo, $id){
+function getProjectById($pdo, $id){
     $stmt = $pdo->prepare ("SELECT * FROM projects WHERE id = ?");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);

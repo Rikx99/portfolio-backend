@@ -1,78 +1,114 @@
 <?php
-require_once "../../config/db.php";
-require_once "../../core/auth.php";
-require_once "../../core/functions.php";
-
+require_once __DIR__ . '/../../core/auth.php';
 requireLogin();
 
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../core/functions.php';
+
 $error = "";
+$success = "";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST"){
-    $title = trim($_POST["title"]?? "");
-    $descr = trim($_POST ["description"]?? "");
-    $imageName = null;
-}
-//Validazione base del form
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-if ($title === "" || $descr === ""){
-    $error = "I campi titolo e descrizione sono obbligatori";
-}else{
+    $title = trim($_POST['title']);
+    $description = trim($_POST['description']);
 
-    //Gestione dell' upload dell'immagine
-    if (!empty($_FILES["image"]["name"])){
-    $upploadDir = "../../assets/uploads/";
-    $ext = pathinfo ($_FILES["image"]["name"], PATHINFO_EXTENSION);
-    $imageName = uniqid() . "." . $ext;
-    $targetFile = $upploadDir . $imageName;
+    // Validazione base
+    if ($title === "" || $description === "") {
+        $error = "Compila tutti i campi.";
+    } else {
+        // Upload immagine
+        $imageName = null;
 
-    //Controllo del tipo di file
-    $allowedTypes = ["jpg", "jpeg", "png", "gif"];
-    if (!in_array(strtolower($ext), $allowedTypes))
-    {
-        $error = "Tipo di file non consentito";
-    }
-    else if (!move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-        $error = "Errore durante l'upload dell'immagine";
-}
-    }
+        if (!empty($_FILES['image']['name'])) {
+            $imageName = time() . "_" . basename($_FILES['image']['name']);
+            $targetPath = __DIR__ . '/../../public/assets/uploads/' . $imageName;
 
-    if ($error === ""){
-        if (create_Project($pdo, $title, $descr, $imageName)) {
-            header ("Location: dashboard.php");
-            exit;
-        }else{
-            $error = "Errore durante la creazione del progetto";
+            move_uploaded_file($_FILES['image']['tmp_name'], $targetPath);
         }
+
+        // Salvataggio nel DB
+        $stmt = $pdo->prepare("INSERT INTO projects (title, description, image) VALUES (:t, :d, :i)");
+        $stmt->execute([
+            't' => $title,
+            'd' => $description,
+            'i' => $imageName
+        ]);
+
+        header("Location: /admin/dashboard.php?created=1");
+        exit;
     }
 }
-
 ?>
+
 <!DOCTYPE html>
-<html lang = "it">
-    <head></head>
-        <meta charset="UTF-8">
-        <title>Crea Progetto</title>
-    </head>
-    <body>
-        <h1>Crea un nuovo progetto</h1>
-        <?php if ($error !== ""): ?>
-            <p style="color: red"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
-        <form action = "create.php" method="post" enctype="multipart/form-data">
-            <div>
-                <label for="title">Titolo:</label>
-                <input type="text" name="title" value ="<?= htmlspecialchars($_POST["title"] ?? "") ?>">
-            </div>
-            <div>
-                <label for="description">Descrizione:</label>
-                <textarea name="description" rows="6" cols="40"><?= htmlspecialchars($_POST["description"] ?? "") ?></textarea>
-            </div>
-            <div>
-                <label for="image">Immagine:</label>
-                <input type="file" name="image" accept="image/*">
-            </div>
-            <button type="submit">Salva</button>
-            <a href = "dashboard.php"> Annulla</a>
-        </form>
-    </body>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Crea Progetto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<!-- NAVBAR ADMIN -->
+<nav class="navbar navbar-dark bg-dark px-3">
+    <a class="navbar-brand fw-bold" href="/admin/dashboard.php">Admin Panel</a>
+
+    <div class="ms-auto">
+        <a href="/admin/dashboard.php" class="btn btn-outline-light me-2">Torna alla Dashboard</a>
+        <a href="/admin/logout.php" class="btn btn-danger">Logout</a>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="container py-5">
+
+    <h1 class="text-center mb-4">Crea un nuovo progetto</h1>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 700px;">
+        <div class="card-body">
+
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label class="form-label">Titolo</label>
+                    <input type="text" name="title" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Descrizione</label>
+                    <textarea name="description" class="form-control" rows="4" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Immagine</label>
+                    <input type="file" name="image" class="form-control">
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="/admin/dashboard.php" class="btn btn-secondary">Annulla</a>
+                    <button type="submit" class="btn btn-primary">Salva</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="text-center py-3 text-muted">
+    © <?= date('Y') ?> - Il Mio Portfolio
+</footer>
+
+</body>
 </html>
